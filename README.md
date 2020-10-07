@@ -1,6 +1,6 @@
 # restreamer
 
-#### Build the nginx image:
+#### Build the nginx image of the web server:
 ```sh
 $ docker build -t restreamer:latest .
 ```
@@ -9,15 +9,19 @@ $ docker build -t restreamer:latest .
 ```sh
 $ docker run -d -p 80:80 -p 1935:1935 restreamer:latest
 ```
+You can also use the automated build of the web server on dockerhub: macferreira/restreamer:latest 
 
 #### Start your rtmp stream to nginx with FFmpeg:
 ```sh
-$ ffmpeg -re -i https://live.impresa.pt/live/sic/sic540p.m3u8 -vcodec copy -loop -1 -c:a aac -b:a 160k -ar 44100 -strict -2 -f flv rtmp://127.0.0.1/live/sic
+$ stream-encoder/bin/push-stream.sh https://live.impresa.pt/live/sic/sic540p.m3u8 rtmp://127.0.0.1/live/sic
 ```
 
 #### On your client (for instance VLC) open the streams:
 ```sh
 HLS: http://127.0.0.1/hls/sic.m3u8
+```
+```sh
+DASH: rtmp://127.0.0.1/dash/sic.mpd
 ```
 ```sh
 RTMP: rtmp://127.0.0.1/live/sic
